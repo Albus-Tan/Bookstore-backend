@@ -1,13 +1,16 @@
 package com.mybookstore.mybookstorebackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mybookstore.mybookstorebackend.constant.Constant;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.text.DateFormat;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "order")
+@Table(name = "`order`")  // !!! order is SQL keyword, add ``
 public class Order {
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
     @GenericGenerator(name = "native",strategy = "native")
@@ -17,7 +20,9 @@ public class Order {
     @JoinColumn(name = "user_id", referencedColumnName="user_id")
     private User user;
 
-    private DateFormat time;
+    @JsonFormat(pattern = Constant.DATE_FORMAT_SECOND, timezone = Constant.TIME_ZONE)
+    private Timestamp time;
+
     private Double total_price;
     private Integer num;
     private Integer status;
@@ -54,12 +59,12 @@ public class Order {
         return status;
     }
 
-    public DateFormat getTime() {
-        return time;
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 
-    public void setTime(DateFormat time) {
-        this.time = time;
+    public Timestamp getTime() {
+        return time;
     }
 
     public Double getTotal_price() {
