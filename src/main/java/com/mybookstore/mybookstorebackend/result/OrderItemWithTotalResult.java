@@ -3,12 +3,13 @@ package com.mybookstore.mybookstorebackend.result;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mybookstore.mybookstorebackend.constant.Constant;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
 public class OrderItemWithTotalResult {
     private List<OrderItemResult> orderItemResultList;
-    private Double totalPrice;
+    private BigDecimal totalPrice;
     private Integer totalNum;
     private Integer status;
     private Integer order_id;
@@ -16,7 +17,7 @@ public class OrderItemWithTotalResult {
     @JsonFormat(pattern = Constant.DATE_FORMAT_SECOND, timezone = Constant.TIME_ZONE)
     private Timestamp time;
 
-    public OrderItemWithTotalResult(List<OrderItemResult> orderItemResultList, Double totalPrice, Integer totalNum, Integer status, Integer order_id, Timestamp time) {
+    public OrderItemWithTotalResult(List<OrderItemResult> orderItemResultList, BigDecimal totalPrice, Integer totalNum, Integer status, Integer order_id, Timestamp time) {
         this.orderItemResultList = orderItemResultList;
         this.totalPrice = totalPrice;
         this.totalNum = totalNum;
@@ -33,11 +34,11 @@ public class OrderItemWithTotalResult {
         this.orderItemResultList = orderItemResultList;
     }
 
-    public Double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 

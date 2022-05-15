@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,7 +55,7 @@ public class OrderController {
         // change to order item
         // calculate total num and price
         Integer tot_num = 0;
-        Double tot_price = (double) 0;
+        BigDecimal tot_price = BigDecimal.valueOf(0);
         List<OrderItem> orderItem = new ArrayList<>();
         for(CartItem ci: cart){
             OrderItem oi = new OrderItem();
@@ -62,9 +63,9 @@ public class OrderController {
             Integer num = ci.getNum();
             oi.setNum(num);
             tot_num += num;
-            Double price = ci.getBook().getPrice();
+            BigDecimal price = ci.getBook().getPrice();
             oi.setPrice(price);
-            tot_price += (price * num);
+            tot_price = tot_price.add(price.multiply(BigDecimal.valueOf(num)));
             orderItem.add(oi);
         }
 
@@ -116,10 +117,11 @@ public class OrderController {
         return orderRepository.getByUserId(user_id);
     }
 
+
     @PostMapping(path = "/getByUserIdAndStatus")
     public @ResponseBody List<OrderItemWithTotalResult> getByUserIdAndStatus(@RequestParam Integer user_id, @RequestParam Integer status){
-        List<Order> orderList = new ArrayList<>();
-        if(status == Constant.ALL) orderList = orderRepository.getByUserId(user_id);
+        List<Order> orderList;
+        if(Objects.equals(status, Constant.ALL)) orderList = orderRepository.getByUserId(user_id);
         else orderList = orderRepository.getByUserIdAndStatus(user_id, status);
         List<OrderItemWithTotalResult> orderItemResultList = new ArrayList<>();
         for(Order o : orderList){

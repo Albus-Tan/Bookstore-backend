@@ -1,12 +1,14 @@
 package com.mybookstore.mybookstorebackend.result;
 
+import java.math.BigDecimal;
+
 public class OrderItemResult {
     private Integer num;
     private String name;
-    private Double price;
+    private BigDecimal price;
     private Integer book_id;
 
-    public OrderItemResult(Integer num, String name, Double price, Integer book_id) {
+    public OrderItemResult(Integer num, String name, BigDecimal price, Integer book_id) {
         this.num = num;
         this.name = name;
         this.price = price;
@@ -29,11 +31,11 @@ public class OrderItemResult {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

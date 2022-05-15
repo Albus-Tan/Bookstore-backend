@@ -3,6 +3,7 @@ package com.mybookstore.mybookstorebackend.entity;
 import com.mybookstore.mybookstorebackend.idClass.OrderItemId;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_item")
@@ -24,7 +25,7 @@ public class OrderItem {
     private Book book;
 
     private Integer num;
-    private Double price;
+    private BigDecimal price;
 
     public void setBook_id(Integer book_id) {
         this.book_id = book_id;
@@ -66,11 +67,11 @@ public class OrderItem {
         this.order = order;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }

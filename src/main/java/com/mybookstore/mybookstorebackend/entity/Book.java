@@ -2,6 +2,7 @@ package com.mybookstore.mybookstorebackend.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "book")
@@ -16,7 +17,7 @@ public class Book {
     private String name;
     private String type;
     private String author;
-    private Double price;
+    private BigDecimal price;
     private String description;
     private Integer inventory;
     private String image;
@@ -57,8 +58,8 @@ public class Book {
         this.author = author;
     }
 
-    public Double getPrice() { return price;}
-    public void setPrice(Double price) {
+    public BigDecimal getPrice() { return price;}
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -74,4 +75,6 @@ public class Book {
 
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }
+
+
 }

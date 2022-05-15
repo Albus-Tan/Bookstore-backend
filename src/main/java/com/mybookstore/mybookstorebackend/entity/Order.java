@@ -5,6 +5,7 @@ import com.mybookstore.mybookstorebackend.constant.Constant;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
@@ -23,7 +24,7 @@ public class Order {
     @JsonFormat(pattern = Constant.DATE_FORMAT_SECOND, timezone = Constant.TIME_ZONE)
     private Timestamp time;
 
-    private Double total_price;
+    private BigDecimal total_price;
     private Integer num;
     private Integer status;
 
@@ -67,11 +68,11 @@ public class Order {
         return time;
     }
 
-    public Double getTotal_price() {
+    public BigDecimal getTotal_price() {
         return total_price;
     }
 
-    public void setTotal_price(Double total_price) {
+    public void setTotal_price(BigDecimal total_price) {
         this.total_price = total_price;
     }
 
