@@ -1,7 +1,6 @@
 package com.mybookstore.mybookstorebackend.dao;
 
 import com.mybookstore.mybookstorebackend.entity.Book;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.util.List;
