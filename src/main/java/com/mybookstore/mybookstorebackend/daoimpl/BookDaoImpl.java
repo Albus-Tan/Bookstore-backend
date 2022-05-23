@@ -67,4 +67,13 @@ public class BookDaoImpl implements BookDao {
         return book.getId();
     }
 
+    @Override
+    public Integer modifyInventory(Integer id, Integer inventory){
+        Book b = bookRepository.getById(id);
+        if(inventory < 0) return Constant.FAIL;
+        b.setInventory(inventory);
+        bookRepository.save(b);
+        return Constant.SUCCESS;
+    }
+
 }

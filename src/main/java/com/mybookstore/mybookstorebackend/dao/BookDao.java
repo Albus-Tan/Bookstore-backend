@@ -1,6 +1,7 @@
 package com.mybookstore.mybookstorebackend.dao;
 
 import com.mybookstore.mybookstorebackend.entity.Book;
+import org.springframework.data.relational.core.sql.In;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,5 +19,7 @@ public interface BookDao {
 
     Integer add(String isbn, String name, String type, String author,
                 BigDecimal price, String description, Integer inventory, String image);
+
+    Integer modifyInventory(Integer id, Integer inventory);
 
 }

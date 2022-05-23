@@ -1,6 +1,7 @@
 package com.mybookstore.mybookstorebackend.serviceimpl;
 
 import com.mybookstore.mybookstorebackend.constant.Constant;
+import com.mybookstore.mybookstorebackend.dao.BookDao;
 import com.mybookstore.mybookstorebackend.dao.CartDao;
 import com.mybookstore.mybookstorebackend.dao.OrderDao;
 import com.mybookstore.mybookstorebackend.dao.UserDao;
@@ -30,6 +31,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private BookDao bookDao;
+
     @Override
     public Integer createOrderFromUserCart(Integer user_id){
 
@@ -47,8 +51,11 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderItem = new ArrayList<>();
         for(CartResult ci: cart){
             OrderItem oi = new OrderItem();
-            oi.setBook_id(ci.getBook().getId());
+            Integer bookId = ci.getBook().getId();
             Integer num = ci.getNum();
+            // decrease inventory
+            if(!Objects.equals(bookDao.modifyInventory(bookId, (ci.getBook().getInventory() - num)), Constant.SUCCESS)) return Constant.FAIL;
+            oi.setBook_id(bookId);
             oi.setNum(num);
             tot_num += num;
             BigDecimal price = ci.getBook().getPrice();
