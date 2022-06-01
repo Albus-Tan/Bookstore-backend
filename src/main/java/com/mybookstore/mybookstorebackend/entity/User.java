@@ -17,6 +17,10 @@ public class User {
     private String tel;
     private String address;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private UserAuth userAuth;
+
     public Integer getUser_id() {
         return user_id;
     }
@@ -55,5 +59,13 @@ public class User {
 
     public String getAddress() {
         return address;
+    }
+
+    public UserAuth getUserAuth() {
+        return userAuth;
+    }
+
+    public void setUserAuth(UserAuth userAuth) {
+        this.userAuth = userAuth;
     }
 }

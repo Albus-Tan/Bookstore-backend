@@ -16,6 +16,7 @@ public class UserAuth {
     private String username;
     private String password;
     private Integer user_type;
+    private Integer user_status;
 
     public void setUser_id(Integer user_id) {
         this.user_id = user_id;
@@ -47,6 +48,14 @@ public class UserAuth {
 
     public Integer getUser_type() {
         return user_type;
+    }
+
+    public Integer getUser_status() {
+        return user_status;
+    }
+
+    public void setUser_status(Integer user_status) {
+        this.user_status = user_status;
     }
 }
 

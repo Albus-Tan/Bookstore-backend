@@ -7,10 +7,14 @@ import com.mybookstore.mybookstorebackend.entity.UserAuth;
 import com.mybookstore.mybookstorebackend.repository.UserAuthRepository;
 import com.mybookstore.mybookstorebackend.repository.UserRepository;
 import com.mybookstore.mybookstorebackend.result.UserAuthResult;
+import com.mybookstore.mybookstorebackend.result.UserResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.jws.soap.SOAPBinding;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -23,6 +27,18 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> getAll(){
         return userRepository.getAll();
+    }
+
+    @Override
+    public List<UserResult> getAllUsersAndStatusAndType(){
+        List<User> users = userRepository.getAll();
+        List<UserResult> userResults = new ArrayList<>();
+        for(User u: users){
+            UserAuth userAuth = u.getUserAuth();
+            UserResult userResult = new UserResult(new UserAuthResult(u.getUser_id(), userAuth.getUser_type(), userAuth.getUser_status()),u);
+            userResults.add(userResult);
+        }
+        return userResults;
     }
 
     @Override
@@ -56,6 +72,7 @@ public class UserDaoImpl implements UserDao {
         userAuth.setUsername(username);
         userAuth.setPassword(password);
         userAuth.setUser_type(user_type);
+        userAuth.setUser_status(Constant.NORMAL);
         userAuthRepository.save(userAuth);
 
         return user.getUser_id();
@@ -64,8 +81,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public UserAuthResult auth(String username, String password){
         UserAuth userAuth = userAuthRepository.auth(username, password);
-        if(userAuth == null) return new UserAuthResult(Constant.NO_SUCH_USER, Constant.NO_SUCH_USER);
-        else return new UserAuthResult(userAuth.getUser_id(), userAuth.getUser_type());
+        if(userAuth == null) return new UserAuthResult(Constant.NO_SUCH_USER, Constant.NO_SUCH_USER, Constant.NO_SUCH_USER);
+        else return new UserAuthResult(userAuth.getUser_id(), userAuth.getUser_type(), userAuth.getUser_status());
     }
 
     @Override
@@ -80,5 +97,13 @@ public class UserDaoImpl implements UserDao {
         userRepository.save(user);
 
         return user.getUser_id();
+    }
+
+    @Override
+    public Integer modifyUserStatus(Integer user_id, Integer user_status){
+        UserAuth userAuth = userAuthRepository.getUserAuthByUser_id(user_id);
+        userAuth.setUser_status(user_status);
+        userAuthRepository.save(userAuth);
+        return  Constant.SUCCESS;
     }
 }

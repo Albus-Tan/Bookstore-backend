@@ -92,6 +92,17 @@ public class OrderDaoImpl implements OrderDao {
 
 
     @Override
+    public List<OrderItemWithTotalResult> getAllOrdersWithItems(){
+        List<Order> orderList = orderRepository.getAll();
+        List<OrderItemWithTotalResult> orderItemResultList = new ArrayList<>();
+        for(Order o : orderList){
+            OrderItemWithTotalResult oir = getItemsAndTotalById(o.getOrder_id());
+            orderItemResultList.add(oir);
+        }
+        return orderItemResultList;
+    }
+
+    @Override
     public List<OrderItemWithTotalResult> getByUserIdAndStatus(Integer user_id, Integer status){
         List<Order> orderList;
         if(Objects.equals(status, Constant.ALL)) orderList = orderRepository.getByUserId(user_id);
@@ -117,9 +128,9 @@ public class OrderDaoImpl implements OrderDao {
         return orderItemWithTotalResult;
     }
 
-
-
-
-
+    @Override
+    public List<OrderItem> getOrderItemsByBookId(Integer book_id){
+        return orderItemRepository.getByBookId(book_id);
+    }
 
 }

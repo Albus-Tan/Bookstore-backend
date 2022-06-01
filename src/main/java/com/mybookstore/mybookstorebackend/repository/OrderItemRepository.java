@@ -11,6 +11,9 @@ public interface OrderItemRepository extends CrudRepository<OrderItem,Integer> {
     @Query("select oi from OrderItem oi where oi.order_id=:order_id")
     List<OrderItem> getByOrderId(@Param("order_id") Integer order_id);
 
+    @Query("select oi from OrderItem oi where oi.book_id=:book_id")
+    List<OrderItem> getByBookId(@Param("book_id") Integer book_id);
+
     @Query("select oi from OrderItem oi where oi.order_id=:order_id and oi.book_id=:book_id")
     OrderItem getByOrderIdAndBookId(@Param("order_id") Integer order_id, @Param("book_id") Integer book_id);
 }

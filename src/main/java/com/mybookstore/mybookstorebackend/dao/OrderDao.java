@@ -17,6 +17,8 @@ public interface OrderDao {
 
     Order getById(Integer id);
 
+    List<OrderItemWithTotalResult> getAllOrdersWithItems();
+
     List<Order> getAll();
 
     Integer deleteById(Integer id);
@@ -30,6 +32,8 @@ public interface OrderDao {
     List<OrderItemWithTotalResult> getByUserIdAndStatus(Integer user_id, Integer status);
 
     OrderItemWithTotalResult getItemsAndTotalById(Integer order_id);
+
+    List<OrderItem> getOrderItemsByBookId(Integer book_id);
 
 
 }

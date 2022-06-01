@@ -1,7 +1,9 @@
 package com.mybookstore.mybookstorebackend.controller;
 
 import com.mybookstore.mybookstorebackend.entity.Order;
+import com.mybookstore.mybookstorebackend.result.BookSalesResult;
 import com.mybookstore.mybookstorebackend.result.OrderItemWithTotalResult;
+import com.mybookstore.mybookstorebackend.result.UserConsumeResult;
 import com.mybookstore.mybookstorebackend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,11 @@ public class OrderController {
     @PostMapping(path = "/getAllOrders")
     public @ResponseBody List<Order> getAllOrders(){
         return orderService.getAll();
+    }
+
+    @PostMapping(path = "/getAllOrdersWithItems")
+    public @ResponseBody List<OrderItemWithTotalResult> getAllOrdersWithItems(){
+        return orderService.getAllOrdersWithItems();
     }
 
     @PostMapping(path = "/deleteByOrderId")
@@ -59,6 +66,16 @@ public class OrderController {
     @PostMapping(path = "/getItemsAndTotalByOrderId")
     public @ResponseBody OrderItemWithTotalResult getItemsAndTotalById(@RequestParam Integer order_id){
         return orderService.getItemsAndTotalById(order_id);
+    }
+
+    @PostMapping(path = "/analysisBookSales")
+    public @ResponseBody List<BookSalesResult> analysisBookSales(){
+        return orderService.analysisBookSales();
+    }
+
+    @PostMapping(path = "/analysisUserConsume")
+    public @ResponseBody List<UserConsumeResult> analysisUserConsume(){
+        return orderService.analysisUserConsume();
     }
 
 }

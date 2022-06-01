@@ -5,11 +5,11 @@ import com.mybookstore.mybookstorebackend.dao.BookDao;
 import com.mybookstore.mybookstorebackend.dao.CartDao;
 import com.mybookstore.mybookstorebackend.dao.OrderDao;
 import com.mybookstore.mybookstorebackend.dao.UserDao;
+import com.mybookstore.mybookstorebackend.entity.Book;
 import com.mybookstore.mybookstorebackend.entity.Order;
 import com.mybookstore.mybookstorebackend.entity.OrderItem;
 import com.mybookstore.mybookstorebackend.entity.User;
-import com.mybookstore.mybookstorebackend.result.CartResult;
-import com.mybookstore.mybookstorebackend.result.OrderItemWithTotalResult;
+import com.mybookstore.mybookstorebackend.result.*;
 import com.mybookstore.mybookstorebackend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -111,6 +111,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderItemWithTotalResult> getAllOrdersWithItems(){return orderDao.getAllOrdersWithItems();}
+
+    @Override
     public List<OrderItemWithTotalResult> getByUserIdAndStatus(Integer user_id, Integer status){
         return orderDao.getByUserIdAndStatus(user_id, status);
     }
@@ -118,6 +121,52 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderItemWithTotalResult getItemsAndTotalById(Integer order_id){
         return orderDao.getItemsAndTotalById(order_id);
+    }
+
+    @Override
+    public BookSalesResult getBookSalesResultByBookId(Integer id){
+        Integer num = 0;
+        BigDecimal total = BigDecimal.valueOf(0);
+        List<OrderItem> orderItemList = orderDao.getOrderItemsByBookId(id);
+        for(OrderItem oi: orderItemList){
+            num += oi.getNum();
+            total = total.add(oi.getPrice());
+        }
+        return new BookSalesResult(bookDao.getById(id), num, total);
+    }
+
+    @Override
+    public List<BookSalesResult> analysisBookSales(){
+        List<Book> books = bookDao.getAll();
+        List<BookSalesResult> bookSalesResultList = new ArrayList<>();
+        for(Book b:books){
+            BookSalesResult bookSalesResult = getBookSalesResultByBookId(b.getId());
+            bookSalesResultList.add(bookSalesResult);
+        }
+        return bookSalesResultList;
+    }
+
+    @Override
+    public List<UserConsumeResult> analysisUserConsume(){
+        List<User> users = userDao.getAll();
+        List<UserConsumeResult> userConsumeResults = new ArrayList<>();
+        for(User u: users){
+            UserConsumeResult userConsumeResult = getUserConsumeResultByUserId(u.getUser_id());
+            userConsumeResults.add(userConsumeResult);
+        }
+        return userConsumeResults;
+    }
+
+    @Override
+    public UserConsumeResult getUserConsumeResultByUserId(Integer user_id){
+        Integer num = 0;
+        BigDecimal total = BigDecimal.valueOf(0);
+        List<Order> orderList = orderDao.getOrdersByUserId(user_id);
+        for(Order o: orderList){
+            num += o.getNum();
+            total = total.add(o.getTotal_price());
+        }
+        return new UserConsumeResult(userDao.getById(user_id), num, total);
     }
 
 }
