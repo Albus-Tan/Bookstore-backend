@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -124,47 +125,55 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public BookSalesResult getBookSalesResultByBookId(Integer id){
+    public BookSalesResult getBookSalesResultByBookId(Integer id, Timestamp start, Timestamp end){
         Integer num = 0;
         BigDecimal total = BigDecimal.valueOf(0);
         List<OrderItem> orderItemList = orderDao.getOrderItemsByBookId(id);
+        boolean checkTime = (start != null && end != null);
         for(OrderItem oi: orderItemList){
-            num += oi.getNum();
-            total = total.add(oi.getPrice());
+            Timestamp orderTime = orderDao.getOrderTimestampById(oi.getOrder_id());
+            if(!checkTime || orderTime.after(start) && orderTime.before(end)){
+                num += oi.getNum();
+                total = total.add(oi.getPrice());
+            }
         }
         return new BookSalesResult(bookDao.getById(id), num, total);
     }
 
     @Override
-    public List<BookSalesResult> analysisBookSales(){
+    public List<BookSalesResult> analysisBookSales(Timestamp start, Timestamp end){
         List<Book> books = bookDao.getAll();
         List<BookSalesResult> bookSalesResultList = new ArrayList<>();
         for(Book b:books){
-            BookSalesResult bookSalesResult = getBookSalesResultByBookId(b.getId());
+            BookSalesResult bookSalesResult = getBookSalesResultByBookId(b.getId(), start, end);
             bookSalesResultList.add(bookSalesResult);
         }
         return bookSalesResultList;
     }
 
     @Override
-    public List<UserConsumeResult> analysisUserConsume(){
+    public List<UserConsumeResult> analysisUserConsume(Timestamp start, Timestamp end){
         List<User> users = userDao.getAll();
         List<UserConsumeResult> userConsumeResults = new ArrayList<>();
         for(User u: users){
-            UserConsumeResult userConsumeResult = getUserConsumeResultByUserId(u.getUser_id());
+            UserConsumeResult userConsumeResult = getUserConsumeResultByUserId(u.getUser_id(),start,end);
             userConsumeResults.add(userConsumeResult);
         }
         return userConsumeResults;
     }
 
     @Override
-    public UserConsumeResult getUserConsumeResultByUserId(Integer user_id){
+    public UserConsumeResult getUserConsumeResultByUserId(Integer user_id, Timestamp start, Timestamp end){
         Integer num = 0;
         BigDecimal total = BigDecimal.valueOf(0);
         List<Order> orderList = orderDao.getOrdersByUserId(user_id);
+        boolean checkTime = (start != null && end != null);
         for(Order o: orderList){
-            num += o.getNum();
-            total = total.add(o.getTotal_price());
+            Timestamp orderTime = o.getTime();
+            if(!checkTime || orderTime.after(start) && orderTime.before(end)){
+                num += o.getNum();
+                total = total.add(o.getTotal_price());
+            }
         }
         return new UserConsumeResult(userDao.getById(user_id), num, total);
     }

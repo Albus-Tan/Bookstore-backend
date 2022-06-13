@@ -133,4 +133,9 @@ public class OrderDaoImpl implements OrderDao {
         return orderItemRepository.getByBookId(book_id);
     }
 
+    @Override
+    public Timestamp getOrderTimestampById(Integer order_id){
+        return orderRepository.getByOrderId(order_id).getTime();
+    }
+
 }

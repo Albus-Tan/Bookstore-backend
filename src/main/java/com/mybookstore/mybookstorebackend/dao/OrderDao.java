@@ -7,6 +7,7 @@ import com.mybookstore.mybookstorebackend.entity.User;
 import com.mybookstore.mybookstorebackend.result.OrderItemWithTotalResult;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface OrderDao {
@@ -34,6 +35,8 @@ public interface OrderDao {
     OrderItemWithTotalResult getItemsAndTotalById(Integer order_id);
 
     List<OrderItem> getOrderItemsByBookId(Integer book_id);
+
+    Timestamp getOrderTimestampById(Integer order_id);
 
 
 }

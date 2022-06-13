@@ -1,5 +1,6 @@
 package com.mybookstore.mybookstorebackend.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mybookstore.mybookstorebackend.entity.Order;
 import com.mybookstore.mybookstorebackend.result.BookSalesResult;
 import com.mybookstore.mybookstorebackend.result.OrderItemWithTotalResult;
@@ -9,7 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.List;
+
+import static com.mybookstore.mybookstorebackend.constant.Constant.DATE_FORMAT_SECOND;
+import static com.mybookstore.mybookstorebackend.constant.Constant.TIME_ZONE;
 
 @Controller
 @RequestMapping(path = "/order", method = RequestMethod.POST)
@@ -69,13 +74,13 @@ public class OrderController {
     }
 
     @PostMapping(path = "/analysisBookSales")
-    public @ResponseBody List<BookSalesResult> analysisBookSales(){
-        return orderService.analysisBookSales();
+    public @ResponseBody List<BookSalesResult> analysisBookSales(@JsonFormat(pattern = DATE_FORMAT_SECOND, timezone = TIME_ZONE) Timestamp startDate, @JsonFormat(pattern = DATE_FORMAT_SECOND, timezone = TIME_ZONE) Timestamp endDate){
+        return orderService.analysisBookSales(startDate, endDate);
     }
 
     @PostMapping(path = "/analysisUserConsume")
-    public @ResponseBody List<UserConsumeResult> analysisUserConsume(){
-        return orderService.analysisUserConsume();
+    public @ResponseBody List<UserConsumeResult> analysisUserConsume(@JsonFormat(pattern = DATE_FORMAT_SECOND, timezone = TIME_ZONE) Timestamp startDate, @JsonFormat(pattern = DATE_FORMAT_SECOND, timezone = TIME_ZONE) Timestamp endDate){
+        return orderService.analysisUserConsume(startDate, endDate);
     }
 
 }

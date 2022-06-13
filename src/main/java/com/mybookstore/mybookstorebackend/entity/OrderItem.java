@@ -13,9 +13,11 @@ public class OrderItem {
     @Id
     private Integer order_id;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName="order_id", insertable = false, updatable = false)
-    private Order order;
+//    // 修改或删除 OrderItem，Order 不删除
+//    // Cascade merge 级联更新（合并）操作: 当 OrderItem 中的数据改变，会相应地更新 Order 中的数据
+//    @ManyToOne(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "order_id", referencedColumnName="order_id", insertable = false, updatable = false)
+//    private Order order;
 
     @Id
     private Integer book_id;
@@ -59,13 +61,13 @@ public class OrderItem {
         this.book = book;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
+//    public Order getOrder() {
+//        return order;
+//    }
+//
+//    public void setOrder(Order order) {
+//        this.order = order;
+//    }
 
     public BigDecimal getPrice() {
         return price;

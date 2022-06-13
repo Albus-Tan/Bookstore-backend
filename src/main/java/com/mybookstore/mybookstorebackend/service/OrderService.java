@@ -5,6 +5,7 @@ import com.mybookstore.mybookstorebackend.result.BookSalesResult;
 import com.mybookstore.mybookstorebackend.result.OrderItemWithTotalResult;
 import com.mybookstore.mybookstorebackend.result.UserConsumeResult;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface OrderService {
@@ -29,12 +30,12 @@ public interface OrderService {
 
     OrderItemWithTotalResult getItemsAndTotalById(Integer order_id);
 
-    List<BookSalesResult> analysisBookSales();
+    List<BookSalesResult> analysisBookSales(Timestamp start, Timestamp end);
 
-    BookSalesResult getBookSalesResultByBookId(Integer id);
+    BookSalesResult getBookSalesResultByBookId(Integer id, Timestamp start, Timestamp end);
 
-    List<UserConsumeResult> analysisUserConsume();
+    List<UserConsumeResult> analysisUserConsume(Timestamp start, Timestamp end);
 
-    UserConsumeResult getUserConsumeResultByUserId(Integer user_id);
+    UserConsumeResult getUserConsumeResultByUserId(Integer user_id, Timestamp start, Timestamp end);
 
 }

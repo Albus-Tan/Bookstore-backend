@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "`order`")  // !!! order is SQL keyword, add ``
@@ -20,6 +21,12 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName="user_id")
     private User user;
+
+    // 删除 Order，需要级联删除 OrderItem
+    // 初始加载的时候不需要把 OrderItem 也拿进来，到要用的时候再建立连接从数据库拿
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", referencedColumnName="order_id")
+    private List<OrderItem> orderItemList;
 
     @JsonFormat(pattern = Constant.DATE_FORMAT_SECOND, timezone = Constant.TIME_ZONE)
     private Timestamp time;
@@ -76,4 +83,11 @@ public class Order {
         this.total_price = total_price;
     }
 
+    public List<OrderItem> getOrderItemList() {
+        return orderItemList;
+    }
+
+    public void setOrderItemList(List<OrderItem> orderItemList) {
+        this.orderItemList = orderItemList;
+    }
 }

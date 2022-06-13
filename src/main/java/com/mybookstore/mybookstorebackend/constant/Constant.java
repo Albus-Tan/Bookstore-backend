@@ -1,17 +1,10 @@
 package com.mybookstore.mybookstorebackend.constant;
 
-import org.springframework.data.relational.core.sql.In;
-
 public class Constant {
-    public static final String USER_ID = "userId";
-    public static final String USERNAME = "username";
-    public static final String PASSWORD = "password";
-    public static final String USER_TYPE = "userType";
-    public static final String REMEMBER_ME = "remember";
-    public static final String JSESSIONID = "JSESSIONID";
 
     // Date
     // 统一时间格式
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String DATE_FORMAT_SECOND = "yyyy-MM-dd HH:mm:ss";
     public static final String TIME_ZONE = "GMT+8";
 
