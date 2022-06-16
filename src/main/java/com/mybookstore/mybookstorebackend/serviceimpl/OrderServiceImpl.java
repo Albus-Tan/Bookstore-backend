@@ -125,16 +125,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public BookSalesResult getBookSalesResultByBookId(Integer id, Timestamp start, Timestamp end){
+    public BookSalesResult getBookSalesResultByBookId(Integer id, Timestamp start, Timestamp end, Integer uid){
         Integer num = 0;
         BigDecimal total = BigDecimal.valueOf(0);
         List<OrderItem> orderItemList = orderDao.getOrderItemsByBookId(id);
         boolean checkTime = (start != null && end != null);
         for(OrderItem oi: orderItemList){
-            Timestamp orderTime = orderDao.getOrderTimestampById(oi.getOrder_id());
+            Integer order_id = oi.getOrder_id();
+            Timestamp orderTime = orderDao.getOrderTimestampById(order_id);
             if(!checkTime || orderTime.after(start) && orderTime.before(end)){
-                num += oi.getNum();
-                total = total.add(oi.getPrice());
+                if(Objects.equals(uid, Constant.ALL) || Objects.equals(uid, orderDao.getOrderUidById(order_id))){
+                    num += oi.getNum();
+                    total = total.add(oi.getPrice());
+                }
             }
         }
         return new BookSalesResult(bookDao.getById(id), num, total);
@@ -145,7 +148,7 @@ public class OrderServiceImpl implements OrderService {
         List<Book> books = bookDao.getAll();
         List<BookSalesResult> bookSalesResultList = new ArrayList<>();
         for(Book b:books){
-            BookSalesResult bookSalesResult = getBookSalesResultByBookId(b.getId(), start, end);
+            BookSalesResult bookSalesResult = getBookSalesResultByBookId(b.getId(), start, end, Constant.ALL);
             bookSalesResultList.add(bookSalesResult);
         }
         return bookSalesResultList;
@@ -176,6 +179,17 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         return new UserConsumeResult(userDao.getById(user_id), num, total);
+    }
+
+    @Override
+    public List<BookSalesResult> getUserBookConsumeDetailResultByUserId(Integer user_id, Timestamp start, Timestamp end){
+        List<Book> books = bookDao.getAll();
+        List<BookSalesResult> bookSalesResultList = new ArrayList<>();
+        for(Book b:books){
+            BookSalesResult bookSalesResult = getBookSalesResultByBookId(b.getId(), start, end, user_id);
+            bookSalesResultList.add(bookSalesResult);
+        }
+        return bookSalesResultList;
     }
 
 }

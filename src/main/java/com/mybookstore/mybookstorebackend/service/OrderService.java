@@ -32,10 +32,12 @@ public interface OrderService {
 
     List<BookSalesResult> analysisBookSales(Timestamp start, Timestamp end);
 
-    BookSalesResult getBookSalesResultByBookId(Integer id, Timestamp start, Timestamp end);
+    BookSalesResult getBookSalesResultByBookId(Integer id, Timestamp start, Timestamp end, Integer uid);
 
     List<UserConsumeResult> analysisUserConsume(Timestamp start, Timestamp end);
 
     UserConsumeResult getUserConsumeResultByUserId(Integer user_id, Timestamp start, Timestamp end);
+
+    List<BookSalesResult> getUserBookConsumeDetailResultByUserId(Integer user_id, Timestamp start, Timestamp end);
 
 }

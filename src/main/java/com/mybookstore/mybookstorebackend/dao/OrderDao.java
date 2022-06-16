@@ -38,5 +38,5 @@ public interface OrderDao {
 
     Timestamp getOrderTimestampById(Integer order_id);
 
-
+    Integer getOrderUidById(Integer order_id);
 }

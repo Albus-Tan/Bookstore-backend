@@ -83,4 +83,9 @@ public class OrderController {
         return orderService.analysisUserConsume(startDate, endDate);
     }
 
+    @PostMapping(path = "/getUserConsumeResultByUserId")
+    public @ResponseBody List<BookSalesResult> getUserBookConsumeDetailResultByUserId(@RequestParam Integer user_id, @JsonFormat(pattern = DATE_FORMAT_SECOND, timezone = TIME_ZONE) Timestamp startDate, @JsonFormat(pattern = DATE_FORMAT_SECOND, timezone = TIME_ZONE) Timestamp endDate){
+        return orderService.getUserBookConsumeDetailResultByUserId(user_id, startDate, endDate);
+    }
+
 }

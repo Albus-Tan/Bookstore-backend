@@ -138,4 +138,9 @@ public class OrderDaoImpl implements OrderDao {
         return orderRepository.getByOrderId(order_id).getTime();
     }
 
+    @Override
+    public Integer getOrderUidById(Integer order_id){
+        return orderRepository.getByOrderId(order_id).getUser().getUser_id();
+    }
+
 }
