@@ -133,10 +133,10 @@ public class OrderServiceImpl implements OrderService {
         for(OrderItem oi: orderItemList){
             Integer order_id = oi.getOrder_id();
             Timestamp orderTime = orderDao.getOrderTimestampById(order_id);
-            if(!checkTime || orderTime.after(start) && orderTime.before(end)){
+            if(!checkTime || (orderTime.after(start) && orderTime.before(end))){
                 if(Objects.equals(uid, Constant.ALL) || Objects.equals(uid, orderDao.getOrderUidById(order_id))){
                     num += oi.getNum();
-                    total = total.add(oi.getPrice());
+                    total = total.add(oi.getPrice().multiply(BigDecimal.valueOf(oi.getNum())));
                 }
             }
         }

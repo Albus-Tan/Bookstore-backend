@@ -38,5 +38,8 @@ public class Constant {
     public static final Integer MANAGER = 1;
     public static final Integer CUSTOMER = 0;
 
+    // 注册结果
+    public static final Integer ALREADY_EXIST = -2;
+
 
 }

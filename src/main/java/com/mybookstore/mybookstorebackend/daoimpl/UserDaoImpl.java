@@ -58,6 +58,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Integer add(String username, String password, Integer user_type){
         // Check if username exist
+        UserAuth oldUserAuth = userAuthRepository.getByUsername(username);
+        if(oldUserAuth != null) return Constant.ALREADY_EXIST;
 
         // No type, change to CUSTOMER
         if(user_type == null) user_type = Constant.CUSTOMER;

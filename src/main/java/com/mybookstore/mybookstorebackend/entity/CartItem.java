@@ -1,5 +1,6 @@
 package com.mybookstore.mybookstorebackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mybookstore.mybookstorebackend.idClass.CartItemId;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ public class CartItem {
     private Integer user_id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id", referencedColumnName="user_id", insertable = false, updatable = false)
     private User user;
 
@@ -20,6 +22,7 @@ public class CartItem {
     private Integer book_id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "book_id", referencedColumnName="id", insertable = false, updatable = false)
     private Book book;
 
