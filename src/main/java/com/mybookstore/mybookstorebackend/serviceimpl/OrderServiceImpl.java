@@ -13,6 +13,7 @@ import com.mybookstore.mybookstorebackend.result.*;
 import com.mybookstore.mybookstorebackend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -65,18 +66,34 @@ public class OrderServiceImpl implements OrderService {
             orderItem.add(oi);
         }
 
-        // store order
-        Integer orderId = orderDao.addOrder(tot_num, tot_price, user);
-
-        // store order item
-        if(!Objects.equals(orderDao.addOrderItems(orderId, orderItem), Constant.SUCCESS)){
-            return Constant.FAIL;
-        }
+        Integer orderId = createOrder(tot_num, tot_price, user, orderItem);
 
         // delete cart items turned into order
         cartDao.clearAllByUserId(user_id);
 
         return orderId;
+    }
+
+    @Override
+    @Transactional
+    public Integer createOrder(Integer tot_num, BigDecimal tot_price, User user, List<OrderItem> orderItem){
+
+        // store order
+        Integer orderId = orderDao.addOrder(tot_num, tot_price, user);
+
+        // int res = 10 / 0;
+
+        // store order item
+        try{
+            orderDao.addOrderItems(orderId, orderItem);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // int res = 10 / 0;
+
+        return orderId;
+
     }
 
     @Override
