@@ -1,20 +1,21 @@
 package com.mybookstore.mybookstorebackend.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mybookstore.mybookstorebackend.constant.Constant;
 import com.mybookstore.mybookstorebackend.entity.Order;
 import com.mybookstore.mybookstorebackend.result.BookSalesResult;
 import com.mybookstore.mybookstorebackend.result.OrderItemWithTotalResult;
 import com.mybookstore.mybookstorebackend.result.UserConsumeResult;
 import com.mybookstore.mybookstorebackend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-import static com.mybookstore.mybookstorebackend.constant.Constant.DATE_FORMAT_SECOND;
-import static com.mybookstore.mybookstorebackend.constant.Constant.TIME_ZONE;
+import static com.mybookstore.mybookstorebackend.constant.Constant.*;
 
 @Controller
 @RequestMapping(path = "/order", method = RequestMethod.POST)
@@ -23,9 +24,15 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
     @PostMapping(path = "/createOrderFromUserCart")
     public @ResponseBody Integer CreateOrderFromUserCart(@RequestParam Integer user_id){
-        return orderService.createOrderFromUserCart(user_id);
+        kafkaTemplate.send("CreateOrder",  "key", user_id.toString());
+        // TODO: change return value (in frontend)
+        // return orderService.createOrderFromUserCart(user_id);
+        return SUCCESS;
     }
 
     @PostMapping(path = "/getAllOrders")
