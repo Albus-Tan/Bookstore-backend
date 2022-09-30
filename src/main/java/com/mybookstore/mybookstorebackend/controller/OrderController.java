@@ -29,10 +29,15 @@ public class OrderController {
 
     @PostMapping(path = "/createOrderFromUserCart")
     public @ResponseBody Integer CreateOrderFromUserCart(@RequestParam Integer user_id){
+
         kafkaTemplate.send("CreateOrder",  "key", user_id.toString());
-        // TODO: change return value (in frontend)
-        // return orderService.createOrderFromUserCart(user_id);
+
         return SUCCESS;
+    }
+
+    @PostMapping(path = "/createOrderFromUserCartNoMsg")
+    public @ResponseBody Integer CreateOrderFromUserCartNoMsg(@RequestParam Integer user_id){
+        return orderService.createOrderFromUserCart(user_id);
     }
 
     @PostMapping(path = "/getAllOrders")

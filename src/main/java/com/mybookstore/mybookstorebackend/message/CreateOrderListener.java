@@ -20,13 +20,13 @@ public class CreateOrderListener {
     public void CreateOrderControllerListener(ConsumerRecord<String, String> record) {
         String uid = record.value();
         System.out.println("CreateOrderListener get uid " + uid);
-        orderService.createOrderFromUserCart(Integer.valueOf(uid));
-        kafkaTemplate.send("CreateOrderResult",  "key", "Done");
+        Integer oid = orderService.createOrderFromUserCart(Integer.valueOf(uid));
+        kafkaTemplate.send("CreateOrderResult",  "key", oid.toString());
     }
 
     @KafkaListener(topics = "CreateOrderResult", groupId = "group_create_order")
     public void CreateOrderResultListener(ConsumerRecord<String, String> record) {
         String value = record.value();
-        System.out.println("CreateOrderResultListener " + value);
+        System.out.println("CreateOrderResultListener order_id " + value);
     }
 }
