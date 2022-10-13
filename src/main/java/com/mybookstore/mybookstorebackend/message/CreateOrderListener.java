@@ -33,6 +33,6 @@ public class CreateOrderListener {
         String value = record.value();
         String[] para = value.split(";");
         System.out.println("CreateOrderResultListener order_id " + para[1] + " uid " + para[0]);
-        webSocketServer.sendMessage(para[1],para[0]);
+        webSocketServer.sendMessageToUser(para[0],para[1]);
     }
 }
