@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/book", method = RequestMethod.POST)
+@RequestMapping(path = "/book")
 public class BookController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class BookController {
         return bookService.addBook(isbn, name, type, author, price, description, inventory, image);
     }
 
-    @PostMapping(path ="/getAll")
+    @RequestMapping(path ="/getAll")
     public @ResponseBody List<Book> getAll() {
         return bookService.getAllBooks();
     }
