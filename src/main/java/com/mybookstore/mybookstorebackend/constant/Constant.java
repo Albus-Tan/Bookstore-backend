@@ -41,5 +41,5 @@ public class Constant {
     // 注册结果
     public static final Integer ALREADY_EXIST = -2;
 
-
 }
+
