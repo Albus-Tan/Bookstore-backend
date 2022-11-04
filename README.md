@@ -18,6 +18,9 @@ D:\Kafka\kafka_2.13-3.2.1\bin\windows\kafka-server-start.bat D:\Kafka\kafka_2.13
 ## 安全
 需要依据实际情况修改 application.properties 中 server.ssl.key 相关的内容
 ## 缓存 Redis
-在命令行中启动 Redis，进入到安装目录执行
-redis-server.exe redis.windows.conf
+在命令行中启动 Redis，安装目录 D:\Redis\Redis-x64-3.0.504\ 执行
+D:\Redis\Redis-x64-3.0.504\redis-server.exe D:\Redis\Redis-x64-3.0.504\redis.windows.conf
+## 全文搜索 solr
+在命令行中启动 solr
+D:\solr\solr-8.11.2\bin\solr start -e cloud
 
