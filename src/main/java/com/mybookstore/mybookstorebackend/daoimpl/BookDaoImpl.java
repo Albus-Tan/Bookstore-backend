@@ -4,6 +4,8 @@ import com.mybookstore.mybookstorebackend.constant.Constant;
 import com.mybookstore.mybookstorebackend.constant.RedisKey;
 import com.mybookstore.mybookstorebackend.dao.BookDao;
 import com.mybookstore.mybookstorebackend.entity.Book;
+import com.mybookstore.mybookstorebackend.entity.BookImage;
+import com.mybookstore.mybookstorebackend.repository.BookImageRepository;
 import com.mybookstore.mybookstorebackend.repository.BookRepository;
 import com.mybookstore.mybookstorebackend.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +13,13 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class BookDaoImpl implements BookDao {
+
+    @Autowired
+    private BookImageRepository bookImageRepository;
 
     @Autowired
     private BookRepository bookRepository;
@@ -35,6 +41,16 @@ public class BookDaoImpl implements BookDao {
             book = JSONArray.parseObject(p.toString(), Book.class);
             System.out.println("Book: " + id + " is in Redis");
         }
+
+        Optional<BookImage> bookImage = bookImageRepository.findById(id);
+        if(bookImage.isPresent()){
+            System.out.println("getById: bookImage Not Null " + id);
+            book.setBookImageContent(bookImage.get());
+        } else {
+            System.out.println("getById: bookImage is Null " + id);
+            book.setBookImageContent(null);
+        }
+
         return book;
     }
 
@@ -52,6 +68,19 @@ public class BookDaoImpl implements BookDao {
             bookList = JSONArray.parseArray(p.toString(), Book.class);
             System.out.println("AllBooksList is in Redis");
         }
+
+        for(Book book : bookList){
+            Integer id = book.getId();
+            Optional<BookImage> bookImage = bookImageRepository.findById(id);
+            if(bookImage.isPresent()){
+                System.out.println("getAll: bookImage Not Null " + id);
+                book.setBookImageContent(bookImage.get());
+            } else {
+                System.out.println("getAll: bookImage is Null " + id);
+                book.setBookImageContent(null);
+            }
+        }
+
         return bookList;
     }
 
@@ -73,6 +102,10 @@ public class BookDaoImpl implements BookDao {
         if(redisUtil.hasKey(RedisKey.BOOK_PREFIX + id)) redisUtil.del(RedisKey.BOOK_PREFIX + id);
         System.out.println("Delete Book: " + id + " in DB");
         bookRepository.delete(b);
+
+        // delete image
+        bookImageRepository.deleteById(id);
+
         return Constant.SUCCESS;
     }
 
@@ -102,6 +135,9 @@ public class BookDaoImpl implements BookDao {
         redisUtil.update(RedisKey.BOOK_PREFIX + id, JSONArray.toJSON(b));
         System.out.println("Update Book: " + id + " in DB");
         bookRepository.save(b);
+
+        // update image content
+
         return Constant.SUCCESS;
     }
 
@@ -130,6 +166,11 @@ public class BookDaoImpl implements BookDao {
         System.out.println("Add Book: " + id + " in DB");
         System.out.println("Add Book: " + id + " in Redis");
         redisUtil.set(RedisKey.BOOK_PREFIX + id, JSONArray.toJSON(book));
+
+        // add image content
+        BookImage bookImage = new BookImage(id, "");
+        bookImageRepository.save(bookImage);
+
         return id;
     }
 

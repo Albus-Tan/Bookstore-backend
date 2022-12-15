@@ -22,6 +22,9 @@ public class Book {
     private Integer inventory;
     private String image;
 
+    @Transient
+    private BookImage bookImageContent;  // store in mongodb
+
 
     public Integer getId() {
         return id;
@@ -76,5 +79,12 @@ public class Book {
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }
 
+    @Transient
+    public BookImage getBookImageContent() {
+        return bookImageContent;
+    }
 
+    public void setBookImageContent(BookImage bookImageContent) {
+        this.bookImageContent = bookImageContent;
+    }
 }

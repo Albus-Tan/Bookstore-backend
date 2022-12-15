@@ -4,7 +4,7 @@
 本项目代码已合入上海交通大学软件学院代码查重库，请学弟学妹注意，不要抄袭！！！
 
 # 项目启动
-## 数据库：需要配置数据库
+## MySQL数据库：需要配置数据库
 需要依据实际情况修改 application.properties 中 spring.datasource 相关的内容
 
 # 项目启动 SE3353 相关分支
@@ -23,4 +23,6 @@ D:\Redis\Redis-x64-3.0.504\redis-server.exe D:\Redis\Redis-x64-3.0.504\redis.win
 ## 全文搜索 solr
 在命令行中启动 solr
 D:\solr\solr-8.11.2\bin\solr start -e cloud
+## mongoDB
+需要依据实际情况修改 application.properties 中 mongodb.uri 相关的内容
 
