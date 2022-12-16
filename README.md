@@ -25,4 +25,7 @@ D:\Redis\Redis-x64-3.0.504\redis-server.exe D:\Redis\Redis-x64-3.0.504\redis.win
 D:\solr\solr-8.11.2\bin\solr start -e cloud
 ## mongoDB
 需要依据实际情况修改 application.properties 中 mongodb.uri 相关的内容
+##neo4j
+下载并启动 neo4j
+neo4j.bat console
 

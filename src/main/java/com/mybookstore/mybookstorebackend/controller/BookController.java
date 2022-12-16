@@ -1,8 +1,8 @@
 package com.mybookstore.mybookstorebackend.controller;
 
-import com.mybookstore.mybookstorebackend.constant.Constant;
 import com.mybookstore.mybookstorebackend.constant.SolrConstant;
 import com.mybookstore.mybookstorebackend.entity.Book;
+import com.mybookstore.mybookstorebackend.entity.BookType;
 import com.mybookstore.mybookstorebackend.service.BookService;
 import com.mybookstore.mybookstorebackend.solr.BookObjectBinding;
 import com.mybookstore.mybookstorebackend.solr.SolrBookObject;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = "/book")
@@ -63,6 +64,22 @@ public class BookController {
     @PostMapping(path = "/querying/description")
     public @ResponseBody List<SolrBookObject> queryingDescription(@RequestParam String keyword) throws SolrServerException, IOException {
         return bookObjectBinding.querying(SolrConstant.DESCRIPTION_FIELD_NAME, keyword);
+    }
+
+    @PostMapping(path = "/typeGraph/rebuild")
+    public @ResponseBody String RebuildTypeLabelGraph() {
+        bookService.RebuildTypeLabelGraph();
+        return "OK";
+    }
+
+    @PostMapping(path = "/typeGraph/getByType")
+    public @ResponseBody List<BookType> GetRelatedSubclass(@RequestParam String type)  {
+        return bookService.GetRelatedSubclass(type);
+    }
+
+    @PostMapping(path = "/getBooksByTypeRelated")
+    public @ResponseBody Set<Book> getBooksByTypeRelated(@RequestParam String type) {
+        return bookService.getBooksByTypeRelated(type);
     }
 
 }
