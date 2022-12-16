@@ -239,12 +239,14 @@ public class BookDaoImpl implements BookDao {
     public List<BookType> GetRelatedSubclass(String type) {
         List<BookType> res = new ArrayList<>();
         BookType bookType = bookTypeRepository.findByType(type);
-        res.add(bookType);
-        if(bookType.relatedTypes != null){
-            res.addAll(bookType.relatedTypes);
-            for (BookType bt : bookType.relatedTypes) {
-                Set<BookType> bookTypeSet = (bookTypeRepository.findByType(bt.getType())).relatedTypes;
-                if(bookTypeSet != null) res.addAll(bookTypeSet);
+        if(bookType != null){
+            res.add(bookType);
+            if(bookType.relatedTypes != null){
+                res.addAll(bookType.relatedTypes);
+                for (BookType bt : bookType.relatedTypes) {
+                    Set<BookType> bookTypeSet = (bookTypeRepository.findByType(bt.getType())).relatedTypes;
+                    if(bookTypeSet != null) res.addAll(bookTypeSet);
+                }
             }
         }
 

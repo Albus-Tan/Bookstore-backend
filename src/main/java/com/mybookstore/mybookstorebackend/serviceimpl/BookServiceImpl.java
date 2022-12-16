@@ -60,6 +60,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Set<Book> getBooksByTypeRelated(String type){
         List<BookType> bookTypeList = bookDao.GetRelatedSubclass(type);
+        if(bookTypeList.isEmpty()) return new HashSet<>();
         Set<String> type_str = new HashSet<>();
         for(BookType bookType:bookTypeList){
             type_str.add(bookType.getType());
