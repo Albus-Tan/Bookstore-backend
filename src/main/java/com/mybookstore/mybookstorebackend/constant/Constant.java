@@ -41,5 +41,8 @@ public class Constant {
     // 注册结果
     public static final Integer ALREADY_EXIST = -2;
 
+    // 优先使用存储在 MongoDB 中的 Base64 图片
+    public static final Boolean USE_BASE64 = true;
 
 }
+

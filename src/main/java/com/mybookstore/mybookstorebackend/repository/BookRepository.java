@@ -16,4 +16,6 @@ public interface BookRepository extends CrudRepository<Book,Integer> {
     @Query("select b from Book b where b.id=:id")
     Book getById(@Param("id") Integer id);
 
+    List<Book> getBooksByType(String type);
+
 }

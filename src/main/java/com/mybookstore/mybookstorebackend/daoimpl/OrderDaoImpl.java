@@ -11,6 +11,8 @@ import com.mybookstore.mybookstorebackend.result.OrderItemResult;
 import com.mybookstore.mybookstorebackend.result.OrderItemWithTotalResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -29,6 +31,7 @@ public class OrderDaoImpl implements OrderDao {
     private OrderRepository orderRepository;
 
     @Override
+    @Transactional
     public Integer addOrder(Integer tot_num, BigDecimal tot_Price, User user){
         Order order = new Order();
         order.setUser(user);
@@ -39,16 +42,23 @@ public class OrderDaoImpl implements OrderDao {
         order.setStatus(Constant.UNPAID);
         // store order
         orderRepository.save(order);
+
+        // int res = 10 / 0;
+
         return order.getOrder_id();
     }
 
     @Override
+    @Transactional //(propagation = Propagation.REQUIRES_NEW)
     public Integer addOrderItems(Integer orderId, List<OrderItem> orderItems){
         // store order item
         for(OrderItem oi: orderItems){
             oi.setOrder_id(orderId);
         }
         orderItemRepository.saveAll(orderItems);
+
+        // int res = 10 / 0;
+
         return Constant.SUCCESS;
     }
 

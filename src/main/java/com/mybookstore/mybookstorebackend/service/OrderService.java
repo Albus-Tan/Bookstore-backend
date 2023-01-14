@@ -1,16 +1,21 @@
 package com.mybookstore.mybookstorebackend.service;
 
 import com.mybookstore.mybookstorebackend.entity.Order;
+import com.mybookstore.mybookstorebackend.entity.OrderItem;
+import com.mybookstore.mybookstorebackend.entity.User;
 import com.mybookstore.mybookstorebackend.result.BookSalesResult;
 import com.mybookstore.mybookstorebackend.result.OrderItemWithTotalResult;
 import com.mybookstore.mybookstorebackend.result.UserConsumeResult;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
 public interface OrderService {
 
     Integer createOrderFromUserCart(Integer user_id);
+
+    Integer createOrder(Integer tot_num, BigDecimal tot_price, User user, List<OrderItem> orderItem);
 
     Order getById(Integer id);
 

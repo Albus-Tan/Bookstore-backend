@@ -1,10 +1,11 @@
 package com.mybookstore.mybookstorebackend.dao;
 
 import com.mybookstore.mybookstorebackend.entity.Book;
-import org.springframework.data.relational.core.sql.In;
+import com.mybookstore.mybookstorebackend.entity.BookType;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 public interface BookDao {
     Book getById(Integer id);
@@ -22,4 +23,9 @@ public interface BookDao {
 
     Integer modifyInventory(Integer id, Integer inventory);
 
+    void RebuildTypeLabelGraph();
+
+    List<BookType> GetRelatedSubclass(String type);
+
+    Set<Book> getByBookType(Set<String> type);
 }
